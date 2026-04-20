@@ -1,10 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { LinkedinScraper } from './scrapers/linkedin.scraper';
+import { JobsFilter } from './filters/jobs.filter';
+import { JobPost } from './interfaces/job-post.interface';
 
 @Injectable()
 export class JobsService {
-  @Cron('*/1 * * * *') // cada 1 minuto
-  handleCron() {
-    console.log('⏰ Buscando nuevas vacantes...');
+  constructor(
+    private readonly linkedinScraper: LinkedinScraper,
+    private readonly jobsFilter: JobsFilter,
+  ) {}
+
+  async checkJobs(): Promise<JobPost[]> {
+    const jobs = await this.linkedinScraper.getJobs();
+    const filteredJobs = this.jobsFilter.filterRelevantJobs(jobs);
+
+    console.log('Vacantes encontradas:', jobs);
+    console.log('Vacantes filtradas:', filteredJobs);
+
+    return filteredJobs;
   }
 }

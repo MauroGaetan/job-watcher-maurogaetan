@@ -4,5 +4,7 @@ import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [ScheduleModule.forRoot(), JobsModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
