@@ -4,4 +4,6 @@ export interface JobPost {
   location: string;
   url: string;
   source: string;
+  publishedAt: string;
+  externalId: string;
 }
