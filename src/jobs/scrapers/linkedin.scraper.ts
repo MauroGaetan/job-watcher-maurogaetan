@@ -5,7 +5,11 @@ import { JobPost } from '../interfaces/job-post.interface';
 @Injectable()
 export class LinkedinScraper {
   async getJobs(): Promise<JobPost[]> {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-gpu'],
+    });
+
     const page = await browser.newPage();
 
     try {
@@ -39,8 +43,9 @@ export class LinkedinScraper {
             const publishedAt =
               card.querySelector('time')?.textContent?.trim() || '';
 
-            const match = url.match(/-(\d+)\?/);
-            const externalId = match ? match[1] : url;
+            const cleanUrl = url.split('?')[0];
+            const match = cleanUrl.match(/-(\d+)$/);
+            const externalId = match ? match[1] : cleanUrl;
 
             return {
               title,

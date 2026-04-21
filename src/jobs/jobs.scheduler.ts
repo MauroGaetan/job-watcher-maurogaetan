@@ -6,7 +6,7 @@ import { JobsService } from './jobs.service';
 export class JobsScheduler {
   constructor(private readonly jobsService: JobsService) {}
 
-  @Cron('*/1 * * * *')
+  @Cron('*/5 * * * *')
   async handleCron() {
     console.log('⏰ Ejecutando búsqueda de vacantes...');
     await this.jobsService.checkJobs();

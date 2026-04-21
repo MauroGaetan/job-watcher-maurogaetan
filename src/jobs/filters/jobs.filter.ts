@@ -14,39 +14,44 @@ export class JobsFilter {
         title.includes('back-end') ||
         title.includes('node') ||
         title.includes('nodejs') ||
-        title.includes('nestjs');
+        title.includes('nestjs') ||
+        title.includes('javascript') ||
+        title.includes('typescript') ||
+        title.includes('api');
 
       const isSenior =
         title.includes('senior') ||
         title.includes('sr') ||
         title.includes('staff') ||
         title.includes('principal') ||
-        title.includes('lead');
+        title.includes('lead') ||
+        title.includes('architect');
 
       const isArgentina =
-        location.includes('argentina') || location.includes('buenos aires');
+        location.includes('argentina') ||
+        location.includes('buenos aires') ||
+        location.includes('caba');
 
       const isRemote =
         title.includes('remote') ||
         title.includes('remoto') ||
         location.includes('remote') ||
-        location.includes('remoto');
+        location.includes('remoto') ||
+        location.includes('worldwide') ||
+        location.includes('latam') ||
+        location.includes('latin america');
 
-      // Argentina: cualquier modalidad
-      // Resto del mundo: solo remoto
       const matchesLocation = isArgentina || isRemote;
 
-      // máximo 24 hs
-      const isRecent =
-        publishedAt.includes('minute') ||
-        publishedAt.includes('minutes') ||
-        publishedAt.includes('hour') ||
-        publishedAt.includes('hours') ||
-        publishedAt.includes('just now') ||
-        publishedAt.includes('moments ago') ||
-        publishedAt === '1 day ago' ||
-        publishedAt === '1d' ||
-        publishedAt === '24h';
+      const isJustNow =
+        publishedAt.includes('just now') || publishedAt.includes('moments ago');
+
+      const minutesMatch = publishedAt.match(
+        /(\d+)\s*(minute|minutes|min|mins)/,
+      );
+      const minutes = minutesMatch ? Number(minutesMatch[1]) : null;
+
+      const isRecent = isJustNow || (minutes !== null && minutes <= 40);
 
       return includesTech && !isSenior && matchesLocation && isRecent;
     });

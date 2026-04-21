@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('jobs')
 export class JobEntity {
@@ -25,4 +30,10 @@ export class JobEntity {
 
   @Column({ unique: true })
   externalId: string;
+
+  @Column({ default: false })
+  sent: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
